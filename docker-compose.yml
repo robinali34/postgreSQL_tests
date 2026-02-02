@@ -1,0 +1,24 @@
+# Netflix-style SQL Practice - Local PostgreSQL
+# Netflix uses Amazon Aurora (PostgreSQL-compatible) and MySQL in production.
+# PostgreSQL is used here for local practice (Aurora PostgreSQL compatible).
+
+services:
+  postgres:
+    image: postgres:16-alpine
+    container_name: netflix-sql-practice
+    environment:
+      POSTGRES_USER: netflix
+      POSTGRES_PASSWORD: practice
+      POSTGRES_DB: netflix_db
+    ports:
+      - "5433:5432"   # host 5433 to avoid conflict with existing postgres on 5432
+    volumes:
+      - ./schema.sql:/docker-entrypoint-initdb.d/01-schema.sql
+      - ./seed.sql:/docker-entrypoint-initdb.d/02-seed.sql
+      - ./schema_practice_tables.sql:/docker-entrypoint-initdb.d/03-schema_practice_tables.sql
+      - ./seed_practice_tables.sql:/docker-entrypoint-initdb.d/04-seed_practice_tables.sql
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U netflix -d netflix_db"]
+      interval: 5s
+      timeout: 5s
+      retries: 5

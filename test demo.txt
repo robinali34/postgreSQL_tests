@@ -1,0 +1,192 @@
+Absolutely — here’s a tight, interview-ready SQL cheat list tuned specifically for Netflix + Device Reliability. This is the stuff to practice until it’s muscle memory.
+
+Save this. Skim it right before the interview. 🧠🔥
+
+🎯 Netflix SQL Interview Cheat List
+
+(Device Reliability Focus)
+
+1️⃣ First 60 Seconds: How Netflix Wants You to Think
+
+Before typing SQL, say (or think):
+
+“Is this isolated or systemic? What’s the user impact? What changed?”
+
+That framing alone scores points.
+
+2️⃣ Core Tables You Should Assume Exist
+
+Practice queries assuming tables like:
+
+playback_events(session_id, device_id, event_type, event_time, app_version)
+
+device_sessions(session_id, device_type, device_model, os_version, country)
+
+errors(session_id, error_code, event_time)
+
+crashes(device_id, crash_time)
+
+rollouts(app_version, rollout_date)
+
+devices(device_id, manufacturer, model)
+
+3️⃣ Must-Have Query Patterns (Practice These)
+A️⃣ Failure Rate (Not Raw Count)
+SELECT
+  device_model,
+  COUNT(CASE WHEN event_type = 'failure' THEN 1 END) * 1.0
+    / COUNT(*) AS failure_rate
+FROM playback_events
+GROUP BY device_model
+HAVING COUNT(*) > 1000
+ORDER BY failure_rate DESC;
+
+
+📌 Netflix loves rates + sample size filters.
+
+B️⃣ Before vs After (Regression Check)
+SELECT
+  device_model,
+  DATE(event_time) AS day,
+  COUNT(CASE WHEN event_type = 'failure' THEN 1 END) * 1.0
+    / COUNT(*) AS failure_rate
+FROM playback_events
+WHERE event_time >= CURRENT_DATE - INTERVAL '14 days'
+GROUP BY device_model, DATE(event_time)
+ORDER BY device_model, day;
+
+
+📌 Look for step changes, not noise.
+
+C️⃣ Device Cohort Isolation
+SELECT
+  device_type,
+  os_version,
+  COUNT(*) AS sessions
+FROM device_sessions
+GROUP BY device_type, os_version
+ORDER BY sessions DESC;
+
+
+📌 Helps explain why a problem is visible.
+
+D️⃣ App Version Correlation
+SELECT
+  app_version,
+  COUNT(CASE WHEN event_type = 'failure' THEN 1 END) * 1.0
+    / COUNT(*) AS failure_rate
+FROM playback_events
+GROUP BY app_version
+ORDER BY app_version;
+
+
+📌 Always ask: rollout or coincidence?
+
+E️⃣ Join Events → Devices
+SELECT
+  d.manufacturer,
+  d.model,
+  COUNT(*) AS failures
+FROM playback_events p
+JOIN devices d ON p.device_id = d.device_id
+WHERE p.event_type = 'failure'
+GROUP BY d.manufacturer, d.model
+ORDER BY failures DESC;
+
+
+📌 Shows cross-table reasoning.
+
+F️⃣ Time to Detect (Advanced but Impressive)
+SELECT
+  device_model,
+  MIN(event_time) AS first_failure_time
+FROM playback_events
+WHERE event_type = 'failure'
+GROUP BY device_model;
+
+
+📌 Reliability ≠ just fixing — detecting early matters.
+
+G️⃣ Long-Tail Detection
+SELECT
+  device_model,
+  COUNT(*) AS sessions
+FROM device_sessions
+GROUP BY device_model
+HAVING COUNT(*) < 100
+ORDER BY sessions;
+
+
+📌 Netflix cares about long-tail devices.
+
+4️⃣ Window Functions (Bonus Points)
+Detect Sudden Spikes
+SELECT
+  device_model,
+  day,
+  failure_rate,
+  failure_rate
+    - LAG(failure_rate) OVER (PARTITION BY device_model ORDER BY day)
+    AS delta
+FROM daily_failure_rates;
+
+
+📌 Signals regression detection skill.
+
+5️⃣ Things to Say While Querying (Memorize These)
+
+Use these exact phrases:
+
+“I want to normalize by sessions to avoid volume bias.”
+
+“I’ll slice by device cohort to isolate impact.”
+
+“This looks correlated with rollout timing.”
+
+“Sample size here is small, so I’d be cautious.”
+
+“Next, I’d check OS or firmware skew.”
+
+These are Netflix culture signals.
+
+6️⃣ What NOT to Do
+
+❌ One giant unreadable query
+❌ Global averages only
+❌ No explanation of why
+❌ Ignoring rollout timing
+❌ Treating metrics as absolute truth
+
+7️⃣ How to End Every Answer (CRITICAL)
+
+Always conclude with action:
+
+“Based on this, I’d pause rollout for affected cohorts and add targeted monitoring before proceeding.”
+
+Netflix wants decisions, not dashboards.
+
+🧠 One-Page Mental Model
+
+Repeat this internally:
+
+Slice → Normalize → Compare → Explain → Decide
+
+🚀 15-Minute Daily Practice Plan
+
+5 min: failure rate + cohort query
+
+5 min: before/after regression query
+
+5 min: explain results out loud
+
+Do this for 3–4 days and you’ll sound very senior.
+
+If you want next, I can:
+
+Run a mock SQL interview (I ask, you query + explain)
+
+Give you Netflix-style messy data to clean
+
+Translate QuickSet device bugs → SQL investigations
+
+Just say which one 👌
