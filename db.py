@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-Interact with the Netflix SQL practice PostgreSQL database.
+Interact with the PostgreSQL practice database.
 
 Usage:
   python db.py                    # Interactive REPL: type SQL, 'exit' or Ctrl-D to quit
@@ -12,7 +12,7 @@ Setup (recommend a venv):
   python3 -m venv .venv && .venv/bin/pip install -r requirements.txt
 
 Environment (defaults match docker-compose):
-  PGHOST=localhost  PGPORT=5433  PGUSER=netflix  PGPASSWORD=practice  PGDATABASE=netflix_db
+  PGHOST=localhost  PGPORT=5433  PGUSER=practice  PGPASSWORD=practice  PGDATABASE=practice_db
 """
 
 import os
@@ -29,9 +29,9 @@ def get_conn():
     return psycopg2.connect(
         host=os.environ.get("PGHOST", "localhost"),
         port=int(os.environ.get("PGPORT", "5433")),
-        user=os.environ.get("PGUSER", "netflix"),
+        user=os.environ.get("PGUSER", "practice"),
         password=os.environ.get("PGPASSWORD", "practice"),
-        dbname=os.environ.get("PGDATABASE", "netflix_db"),
+        dbname=os.environ.get("PGDATABASE", "practice_db"),
     )
 
 
@@ -94,8 +94,8 @@ def main():
         return
 
     # Interactive REPL
-    print("Netflix SQL practice — type SQL and press Enter. 'exit' or Ctrl-D to quit.")
-    print("(Default: localhost:5433, user netflix, db netflix_db)")
+    print("PostgreSQL SQL practice — type SQL and press Enter. 'exit' or Ctrl-D to quit.")
+    print("(Default: localhost:5433, user practice, db practice_db)")
     conn = get_conn()
     buffer = []
     try:

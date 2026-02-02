@@ -1,4 +1,4 @@
--- Netflix-style sample data for SQL practice
+-- Sample data for SQL practice
 
 -- Users (20 users, various sign-up dates)
 INSERT INTO users (email, sign_up_date, country) VALUES

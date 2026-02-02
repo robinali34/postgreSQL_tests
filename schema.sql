@@ -1,5 +1,5 @@
--- Netflix-style SQL Practice Schema
--- Tables commonly used in Netflix data/SQL interviews
+-- PostgreSQL SQL Practice Schema
+-- Tables for general SQL practice
 
 -- Users (subscription, sign-up)
 DROP TABLE IF EXISTS watching_activity CASCADE;
@@ -77,7 +77,7 @@ CREATE TABLE revenue (
     created_at      TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
--- Indexes for common interview query patterns
+-- Indexes for common query patterns
 CREATE INDEX idx_users_sign_up ON users(sign_up_date);
 CREATE INDEX idx_subscriptions_user_plan ON subscriptions(user_id, plan_type);
 CREATE INDEX idx_content_type_genre ON content(content_type, genre);

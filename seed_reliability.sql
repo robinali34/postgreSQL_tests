@@ -1,4 +1,4 @@
--- Netflix SQL Analysis Test: Realistic messy data
+-- SQL Analysis Test: Realistic messy data
 -- Scenario: Playback failures increased last week (2026-01-01 to 2026-01-07).
 -- New app_version 4.3.0 rolled out 2026-01-02. Some device models show regression.
 

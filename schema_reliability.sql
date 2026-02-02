@@ -1,4 +1,4 @@
--- Netflix SQL Analysis Test: Device / Playback Reliability
+-- SQL Analysis Test: Device / Playback Reliability
 -- Tables: playback_events, rollouts (realistic 1–3 table setup)
 
 DROP TABLE IF EXISTS playback_events CASCADE;

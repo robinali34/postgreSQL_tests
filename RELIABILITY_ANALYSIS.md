@@ -1,8 +1,8 @@
-# What Netflix Means by “SQL Analysis Test”
+# SQL Analysis Test Guide
 
 This is **not** a LeetCode-style SQL quiz.
 
-Netflix uses SQL to evaluate:
+SQL analysis tests evaluate:
 
 - **Analytical thinking**
 - **Data judgment**
@@ -73,7 +73,7 @@ Use this to practice: slice by device (via JOINs), compare before/after, normali
 
 ---
 
-## 3. Netflix-Style Test Cases (Open-Ended)
+## 3. Test Cases (Open-Ended)
 
 Practice answering as you would in an interview: **narrate your thinking**, then write SQL.
 
@@ -120,7 +120,7 @@ Practice answering as you would in an interview: **narrate your thinking**, then
 
 ---
 
-## 4. What Netflix Is Really Scoring You On
+## 4. What SQL Analysis Tests Evaluate
 
 ### Strong signals
 
@@ -173,11 +173,11 @@ Example: *“I’d look for small cohorts with disproportionately high failure r
 - Joining fact table with metadata (e.g. `rollouts`)
 - Handling NULLs (e.g. `error_code`)
 
-Netflix cares more about **clarity and judgment** than exotic syntax.
+SQL analysis tests care more about **clarity and judgment** than exotic syntax.
 
 ---
 
-## 8. How to End Your Analysis (Big Netflix Signal)
+## 8. How to End Your Analysis
 
 Always end with **actionability**:
 
@@ -187,7 +187,7 @@ They want **decisions**, not just dashboards.
 
 ---
 
-## 9. One Netflix SQL Mental Model
+## 9. SQL Analysis Mental Model
 
 **“Slice first, normalize second, explain always, decide last.”**
 
@@ -203,7 +203,7 @@ They want **decisions**, not just dashboards.
 Connect to the same DB as in the main README (port **5433**). The reliability tables are in the same database:
 
 ```bash
-docker exec -it netflix-sql-practice psql -U netflix -d netflix_db
+docker exec -it postgres-sql-practice psql -U practice -d practice_db
 ```
 
 Example checks:

@@ -1,6 +1,6 @@
-# Netflix SQL Interview Practice
+# PostgreSQL SQL Practice
 
-Local PostgreSQL environment for practicing SQL questions similar to **Netflix** data/analytics interviews. Netflix uses **Amazon Aurora (PostgreSQL-compatible)** and **MySQL** in production; this project uses **PostgreSQL 16** locally for practice (Aurora PostgreSQL compatible).
+Local PostgreSQL environment for practicing SQL queries and database operations. This project uses **PostgreSQL 16** locally for general SQL practice.
 
 ---
 
@@ -30,20 +30,20 @@ docker compose ps
 |----------|------------|
 | Host     | `localhost` |
 | Port     | `5433` (host; container uses 5432) |
-| Database | `netflix_db` |
-| User     | `netflix`  |
+| Database | `practice_db` |
+| User     | `practice`  |
 | Password | `practice` |
 
 **psql:**
 
 ```bash
-docker exec -it netflix-sql-practice psql -U netflix -d netflix_db
+docker exec -it postgres-sql-practice psql -U practice -d practice_db
 ```
 
 **Connection string:**
 
 ```
-postgresql://netflix:practice@localhost:5433/netflix_db
+postgresql://practice:practice@localhost:5433/practice_db
 ```
 
 **Python script** (interactive REPL or run a query):
@@ -55,7 +55,7 @@ python3 -m venv .venv && .venv/bin/pip install -r requirements.txt
 .venv/bin/python db.py -f examples.sql    # run example queries
 ```
 
-Uses `PGHOST=localhost`, `PGPORT=5433`, `PGUSER=netflix`, `PGPASSWORD=practice`, `PGDATABASE=netflix_db` by default; override with env vars.
+Uses `PGHOST=localhost`, `PGPORT=5433`, `PGUSER=practice`, `PGPASSWORD=practice`, `PGDATABASE=practice_db` by default; override with env vars.
 
 **SQL examples to run with Python:**
 
@@ -99,7 +99,7 @@ Relations: users → subscriptions, watching_activity, reviews; content → watc
 
 ### Practice tables (playback, devices, sessions, errors, crashes, rollouts)
 
-For Netflix’s **“SQL Analysis Test”** and general practice, the DB also has these tables with sample data:
+For general SQL practice, the DB also has these tables with sample data:
 
 | Table              | Columns |
 |--------------------|--------|
@@ -116,7 +116,7 @@ See **[RELIABILITY_ANALYSIS.md](RELIABILITY_ANALYSIS.md)** for the analysis-test
 
 ---
 
-## Interview Test Cases
+## Practice Test Cases
 
 Try to write the SQL yourself, then check `solutions.sql` or the hints below.
 
@@ -172,14 +172,14 @@ Output: `title`, `avg_stars`, `review_count`.
 Output: `month`, `total_revenue`, `prev_month_revenue`, `pct_growth`. Use `LAG()` and avoid division by zero.
 
 **14. Churn-style: users with no watching_activity in the last 30 days of Jan 2024**  
-Assume “last 30 days” = 2024-01-02 to 2024-01-31. List users who have activity before that window but none inside it (or define “active in Dec” and “inactive in Jan” as you prefer). Clarify in interview if needed.
+Assume "last 30 days" = 2024-01-02 to 2024-01-31. List users who have activity before that window but none inside it.
 
 **15. Second most popular content by hours per plan type**  
 For each `plan_type`, rank content by total hours (from users on that plan) and return the 2nd place. Requires joining `watching_activity` → `users` → `subscriptions` and content, then `ROW_NUMBER() OVER (PARTITION BY plan_type ORDER BY SUM(hours_watched) DESC)` in a subquery/CTE.
 
 ---
 
-## Tips for the interview
+## Tips for SQL Practice
 
 - **Clarify**: date ranges, “current” subscription, definition of “user” or “active.”
 - **Start simple**: get one table or one join right, then add filters and aggregates.
@@ -211,8 +211,5 @@ For each `plan_type`, rank content by total hours (from users on that plan) and 
 
 ## References
 
-- [Netflix on Amazon Aurora (PostgreSQL)](https://aws.amazon.com/blogs/database/netflix-consolidates-relational-database-infrastructure-on-amazon-aurora-achieving-up-to-75-improved-performance/)
-- [Netflix SQL-style interview prep](https://datalemur.com/questions?company=Netflix) (DataLemur)
 - [PostgreSQL 16 docs](https://www.postgresql.org/docs/16/)
-
-Good luck with your Netflix interview.
+- [PostgreSQL Tutorial](https://www.postgresqltutorial.com/)

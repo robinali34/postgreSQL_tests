@@ -1,4 +1,4 @@
--- Practice tables: exact structure for Netflix-style SQL
+-- Practice tables: structure for SQL practice
 -- playback_events(session_id, device_id, event_type, event_time, app_version)
 -- device_sessions(session_id, device_type, device_model, os_version, country)
 -- errors(session_id, error_code, event_time)

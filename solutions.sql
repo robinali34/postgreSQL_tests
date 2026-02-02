@@ -1,4 +1,4 @@
--- Netflix SQL Interview Practice - Example Solutions
+-- SQL Practice - Example Solutions
 -- Try solving in README first, then compare with these.
 
 -- ========== LEVEL 1 ==========
